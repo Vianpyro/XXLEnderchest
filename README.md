@@ -15,7 +15,7 @@ A Fabric mod for **Minecraft Java Edition** that expands your enderchest from th
 
 - Per-server configuration via a simple JSON file
 - Hot-reloadable config — no restart required
-- Items stored in higher rows are **never lost** when the row count is reduced; they are simply inaccessible until rows are increased again
+- Items stored in lower rows are **never lost** when the row count is reduced; they are simply inaccessible until rows are increased again
 - Works on **dedicated servers** and in **single-player**
 
 ---
