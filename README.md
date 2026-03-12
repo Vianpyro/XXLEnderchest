@@ -80,7 +80,7 @@ The mod must be installed **server-side**. The config only needs to be on the se
 Requires Java 21 and an internet connection (to download Gradle and dependencies).
 
 ```bash
-git clone https://github.com/locutus/xxlenderchest.git
+git clone https://github.com/SwordfishBE/XXLEnderchest.git
 cd xxlenderchest
 
 # On Linux/macOS:
