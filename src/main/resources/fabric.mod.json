@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "xxlenderchest",
+  "version": "${version}",
+  "name": "XXL Enderchest",
+  "description": "Expands the Enderchest storage.",
+  "authors": [
+    "SwordfishBE"
+  ],
+  "contact": {
+    "homepage": "https://github.com/SwordfishBE/XXLEnderchest",
+    "sources": "https://github.com/SwordfishBE/XXLEnderchest",
+    "issues": "https://github.com/SwordfishBE/XXLEnderchest/issues"
+  },
+  "license": "LGPL-3.0",
+  "icon": "assets/xxlenderchest/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "be.locutus.xxlenderchest.XXLEnderChest"
+    ]
+  },
+  "mixins": [
+    "xxlenderchest.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "fabric-api": "*",
+    "minecraft": "~1.21.11",
+    "java": ">=21"
+  }
+}

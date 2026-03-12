@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "be.locutus.xxlenderchest.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "PlayerEnderChestContainerMixin",
+    "EnderChestBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
