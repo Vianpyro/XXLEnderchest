@@ -77,7 +77,7 @@ The mod must be installed **server-side**. The config only needs to be on the se
 
 ## Building from source
 
-Requires Java 21 and an internet connection (to download Gradle and dependencies).
+Requires Java 25 and an internet connection (to download Gradle and dependencies).
 
 ```bash
 git clone https://github.com/SwordfishBE/XXLEnderchest.git

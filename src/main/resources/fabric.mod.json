@@ -3,7 +3,7 @@
   "id": "xxlenderchest",
   "version": "${version}",
   "name": "XXL Enderchest",
-  "description": "Expands the Enderchest storage.",
+  "description": "Expands the ender chest from 3 rows (27 slots) up to 6 rows (54 slots). Configurable and reloadable via command.",
   "authors": [
     "SwordfishBE"
   ],
@@ -24,9 +24,9 @@
     "xxlenderchest.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.16.0",
+    "fabricloader": ">=0.18.4",
     "fabric-api": "*",
-    "minecraft": "~1.21.11",
-    "java": ">=21"
+    "minecraft": "~26.1-rc.3",
+    "java": ">=25"
   }
 }

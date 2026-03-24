@@ -9,9 +9,10 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
  * Expands the internal storage of {@link PlayerEnderChestContainer} from 27 slots
  * (vanilla default) to 54 slots (6 rows x 9 columns - the maximum this mod supports).
  *
- * Uses @ModifyArg to safely intercept the argument passed to the super constructor
- * (SimpleContainer). @ModifyConstant on <init> causes bytecode VerifyError because
- * 'this' is not yet initialized when the constant is evaluated.
+ * We always allocate 54 slots regardless of the configured row count so that
+ * items stored in higher rows are never lost when the row count is reduced.
+ *
+ * Uses @ModifyArg (static) to safely intercept the super() constructor argument.
  */
 @Mixin(PlayerEnderChestContainer.class)
 public class PlayerEnderChestContainerMixin {
@@ -25,8 +26,6 @@ public class PlayerEnderChestContainerMixin {
             index = 0
     )
     private static int xxlenderchest$expandContainerSize(int original) {
-        // Always allocate 54 slots (max) so items in higher rows
-        // are never lost when the configured row count is reduced.
         return 54;
     }
 }

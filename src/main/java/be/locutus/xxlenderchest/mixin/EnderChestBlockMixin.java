@@ -23,6 +23,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/**
+ * Intercepts the ender chest block's useWithoutItem method to open a ChestMenu
+ * with 4, 5, or 6 rows instead of the vanilla 3-row menu.
+ *
+ * Uses setActiveChest() exactly like vanilla to correctly drive the lid animation.
+ */
 @Mixin(EnderChestBlock.class)
 public class EnderChestBlockMixin {
 
@@ -43,6 +49,7 @@ public class EnderChestBlockMixin {
     ) {
         XXLConfig config = XXLEnderChest.getConfig();
 
+        // Only intercept when the mod is active and rows > 3
         if (!config.isEnabled() || config.getRows() <= 3) {
             return;
         }
@@ -52,6 +59,7 @@ public class EnderChestBlockMixin {
             return;
         }
 
+        // Check whether a solid block above prevents opening (vanilla parity)
         BlockPos abovePos = pos.above();
         if (level.getBlockState(abovePos).isRedstoneConductor(level, abovePos)) {
             cir.setReturnValue(InteractionResult.SUCCESS);
@@ -62,7 +70,7 @@ public class EnderChestBlockMixin {
             int rows = config.getRows();
             MenuType<?> menuType = rowsToMenuType(rows);
 
-            // setActiveChest drives the lid animation (same as vanilla)
+            // setActiveChest drives the lid animation, same as vanilla
             enderChest.setActiveChest(enderChestBE);
             player.openMenu(new SimpleMenuProvider(
                     (syncId, playerInv, p) -> new ChestMenu(menuType, syncId, playerInv, enderChest, rows),

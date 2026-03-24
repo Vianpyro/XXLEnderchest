@@ -24,7 +24,8 @@ public class XXLCommand {
                     .executes(XXLCommand::executeInfo)
                 )
                 .then(Commands.literal("reload")
-                    .requires(Commands.hasPermission(Commands.LEVEL_ADMINS))
+                    // 26.1: Commands.hasPermission() is the correct way to check OP level
+                    .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                     .executes(XXLCommand::executeReload)
                 )
         );
