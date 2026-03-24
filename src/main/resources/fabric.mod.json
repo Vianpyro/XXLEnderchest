@@ -3,7 +3,7 @@
   "id": "xxlenderchest",
   "version": "${version}",
   "name": "XXL Enderchest",
-  "description": "Expands the ender chest from 3 rows (27 slots) up to 6 rows (54 slots). Configurable and reloadable via command.",
+  "description": "Expands the ender chest from 3 rows (27 slots) up to 6 rows (54 slots).",
   "authors": [
     "SwordfishBE"
   ],
@@ -11,14 +11,14 @@
     "homepage": "https://github.com/SwordfishBE/XXLEnderchest",
     "sources": "https://github.com/SwordfishBE/XXLEnderchest",
     "issues": "https://github.com/SwordfishBE/XXLEnderchest/issues",
-    "email": "swordfishbe@locutus.net"
+	"email": "swordfishbe@locutus.net"
   },
   "license": "AGPL-3.0",
   "icon": "assets/xxlenderchest/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "be.locutus.xxlenderchest.XXLEnderChest"
+      "net.xxlenderchest.XXLEnderChest"
     ]
   },
   "mixins": [
@@ -27,7 +27,7 @@
   "depends": {
     "fabricloader": ">=0.18.4",
     "fabric-api": "*",
-    "minecraft": "~26.1-rc.3",
+    "minecraft": "~26.1",
     "java": ">=25"
   }
 }

@@ -1,7 +1,7 @@
-package be.locutus.xxlenderchest.command;
+package net.xxlenderchest.command;
 
-import be.locutus.xxlenderchest.XXLEnderChest;
-import be.locutus.xxlenderchest.config.XXLConfig;
+import net.xxlenderchest.XXLEnderChest;
+import net.xxlenderchest.config.XXLConfig;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Component;
  *
  * Sub-commands:
  *   /xxlenderchest info   - Shows the current mod state (all players).
- *   /xxlenderchest reload - Reloads the config from disk (OP only).
+ *   /xxlenderchest reload - Reloads the config from disk (OP Gamemaster level only).
  */
 public class XXLCommand {
 
@@ -24,7 +24,6 @@ public class XXLCommand {
                     .executes(XXLCommand::executeInfo)
                 )
                 .then(Commands.literal("reload")
-                    // 26.1: Commands.hasPermission() is the correct way to check OP level
                     .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                     .executes(XXLCommand::executeReload)
                 )

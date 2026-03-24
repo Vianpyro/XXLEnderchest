@@ -1,7 +1,7 @@
-package be.locutus.xxlenderchest.mixin;
+package net.xxlenderchest.mixin;
 
-import be.locutus.xxlenderchest.XXLEnderChest;
-import be.locutus.xxlenderchest.config.XXLConfig;
+import net.xxlenderchest.XXLEnderChest;
+import net.xxlenderchest.config.XXLConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;

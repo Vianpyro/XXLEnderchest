@@ -1,6 +1,6 @@
-package be.locutus.xxlenderchest.config;
+package net.xxlenderchest.config;
 
-import be.locutus.xxlenderchest.XXLEnderChest;
+import net.xxlenderchest.XXLEnderChest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
@@ -14,14 +14,14 @@ import java.nio.file.Path;
 /**
  * Manages reading and writing the {@link XXLConfig} JSON file.
  *
- * <p>The config file is located at {@code <game_dir>/config/xxlenderchest.json}.
- * If the file does not exist it is created with sensible defaults (enabled, 6 rows).</p>
+ * The config file is located at {@code <game_dir>/config/xxlenderchest.json}.
+ * If the file does not exist it is created with sensible defaults (enabled, 6 rows).
  */
 public class XXLConfigManager {
 
     private static final String CONFIG_FILE_NAME = "xxlenderchest.json";
 
-    /** Pretty-printing Gson instance. Gson is bundled with Minecraft/Fabric so no extra dep needed. */
+    /** Pretty-printing Gson instance (bundled with Minecraft/Fabric). */
     private static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .create();
@@ -34,10 +34,6 @@ public class XXLConfigManager {
                 .resolve(CONFIG_FILE_NAME);
     }
 
-    // -------------------------------------------------------------------------
-    // Public API
-    // -------------------------------------------------------------------------
-
     /**
      * Loads the config from disk, creating a default file if none exists.
      *
@@ -45,7 +41,7 @@ public class XXLConfigManager {
      */
     public XXLConfig load() {
         if (!Files.exists(configPath)) {
-            XXLEnderChest.LOGGER.info("[XXL Enderchest] Config not found – creating default config at {}", configPath);
+            XXLEnderChest.LOGGER.info("[XXL Enderchest] Config not found - creating default config at {}", configPath);
             XXLConfig defaults = new XXLConfig();
             save(defaults);
             return defaults;
@@ -55,7 +51,7 @@ public class XXLConfigManager {
             XXLConfig config = GSON.fromJson(reader, XXLConfig.class);
 
             if (config == null) {
-                XXLEnderChest.LOGGER.warn("[XXL Enderchest] Config file was empty or invalid – using defaults.");
+                XXLEnderChest.LOGGER.warn("[XXL Enderchest] Config file was empty or invalid - using defaults.");
                 config = new XXLConfig();
             }
 
@@ -64,13 +60,13 @@ public class XXLConfigManager {
             return config;
 
         } catch (IOException e) {
-            XXLEnderChest.LOGGER.error("[XXL Enderchest] Failed to read config file – using defaults.", e);
+            XXLEnderChest.LOGGER.error("[XXL Enderchest] Failed to read config file - using defaults.", e);
             return new XXLConfig();
         }
     }
 
     /**
-     * Saves the given config to disk (used when generating a default config file).
+     * Saves the given config to disk.
      *
      * @param config the config to save
      */

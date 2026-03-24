@@ -1,8 +1,8 @@
-package be.locutus.xxlenderchest;
+package net.xxlenderchest;
 
-import be.locutus.xxlenderchest.command.XXLCommand;
-import be.locutus.xxlenderchest.config.XXLConfig;
-import be.locutus.xxlenderchest.config.XXLConfigManager;
+import net.xxlenderchest.command.XXLCommand;
+import net.xxlenderchest.config.XXLConfig;
+import net.xxlenderchest.config.XXLConfigManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.slf4j.Logger;

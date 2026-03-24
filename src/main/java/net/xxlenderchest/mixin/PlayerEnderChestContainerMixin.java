@@ -1,4 +1,4 @@
-package be.locutus.xxlenderchest.mixin;
+package net.xxlenderchest.mixin;
 
 import net.minecraft.world.inventory.PlayerEnderChestContainer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,6 +13,8 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
  * items stored in higher rows are never lost when the row count is reduced.
  *
  * Uses @ModifyArg (static) to safely intercept the super() constructor argument.
+ * @ModifyConstant on a constructor causes a VerifyError; @ModifyArg before super()
+ * must be declared static to avoid an InvalidInjectionException.
  */
 @Mixin(PlayerEnderChestContainer.class)
 public class PlayerEnderChestContainerMixin {
