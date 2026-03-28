@@ -4,8 +4,10 @@ import net.xxlenderchest.command.XXLCommand;
 import net.xxlenderchest.config.XXLConfig;
 import net.xxlenderchest.config.XXLConfigManager;
 import net.xxlenderchest.permission.PermissionHelper;
+import net.xxlenderchest.util.ModrinthUpdateChecker;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,6 +88,8 @@ public class XXLEnderChest implements ModInitializer {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
                 XXLCommand.register(dispatcher)
         );
+
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> ModrinthUpdateChecker.checkOnceAsync());
 
         LOGGER.info("[XXL Enderchest] Ready! Ender chest rows: {} (enabled: {})",
                 config.getRows(), config.isEnabled());

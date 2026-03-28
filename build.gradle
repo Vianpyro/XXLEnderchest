@@ -13,7 +13,7 @@ base {
 }
 
 repositories {
-    // Add extra repositories here if needed
+    mavenCentral()
 }
 
 dependencies {
@@ -27,6 +27,7 @@ dependencies {
     // Fabric API — full dependency is safe now; the old javadoc remapping bug
     // was specific to the old remapping loom and no longer applies in 26.1.
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    include(implementation("me.lucko:fabric-permissions-api:0.7.0"))
 }
 
 processResources {

@@ -1,11 +1,9 @@
 package net.xxlenderchest.permission;
 
+import me.lucko.fabric.api.permissions.v0.Permissions;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.level.ServerPlayer;
 import net.xxlenderchest.config.XXLConfig;
-
-import java.lang.reflect.Method;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Resolves XXL Enderchest row access with optional LuckPerms integration.
@@ -17,7 +15,7 @@ public final class PermissionHelper {
     public static final String PERMISSION_ROW_6 = "xxlenderchest.rows.6";
 
     private static final int VANILLA_ROWS = 3;
-    private static final boolean LUCKPERMS_AVAILABLE = isLuckPermsPresent();
+    private static final boolean LUCKPERMS_AVAILABLE = FabricLoader.getInstance().isModLoaded("luckperms");
 
     private PermissionHelper() {
     }
@@ -39,55 +37,16 @@ public final class PermissionHelper {
             return config.getRows();
         }
 
-        if (hasPermission(player.getUUID(), PERMISSION_ROW_6)) {
+        if (Permissions.check(player, PERMISSION_ROW_6, false)) {
             return 6;
         }
-        if (hasPermission(player.getUUID(), PERMISSION_ROW_5)) {
+        if (Permissions.check(player, PERMISSION_ROW_5, false)) {
             return 5;
         }
-        if (hasPermission(player.getUUID(), PERMISSION_ROW_4)) {
+        if (Permissions.check(player, PERMISSION_ROW_4, false)) {
             return 4;
         }
 
         return VANILLA_ROWS;
-    }
-
-    private static boolean isLuckPermsPresent() {
-        try {
-            Class.forName("net.luckperms.api.LuckPermsProvider");
-            return true;
-        } catch (Throwable ignored) {
-            return false;
-        }
-    }
-
-    private static boolean hasPermission(UUID uuid, String node) {
-        try {
-            Class<?> providerClass = Class.forName("net.luckperms.api.LuckPermsProvider");
-            Object luckPerms = providerClass.getMethod("get").invoke(null);
-
-            Object userManager = luckPerms.getClass().getMethod("getUserManager").invoke(luckPerms);
-            Method getUser = userManager.getClass().getMethod("getUser", UUID.class);
-            Object user = getUser.invoke(userManager, uuid);
-
-            if (user == null) {
-                Method loadUser = userManager.getClass().getMethod("loadUser", UUID.class);
-                @SuppressWarnings("unchecked")
-                CompletableFuture<Object> future = (CompletableFuture<Object>) loadUser.invoke(userManager, uuid);
-                user = future.join();
-            }
-
-            if (user == null) {
-                return false;
-            }
-
-            Object cachedData = user.getClass().getMethod("getCachedData").invoke(user);
-            Object permissionData = cachedData.getClass().getMethod("getPermissionData").invoke(cachedData);
-            Object tristate = permissionData.getClass().getMethod("checkPermission", String.class).invoke(permissionData, node);
-
-            return "TRUE".equalsIgnoreCase(tristate.toString());
-        } catch (Throwable ignored) {
-            return false;
-        }
     }
 }
