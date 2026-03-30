@@ -123,7 +123,7 @@ They are simply hidden until that player regains enough rows again.
 ### Removing the mod
 
 Vanilla Minecraft only uses the first 27 ender chest slots.
-If you remove XXL Enderchest from an existing world, items stored above the first 3 rows may no longer be accessible.
+If you remove XXL Enderchest from an existing world, items stored below the first 3 rows may no longer be accessible.
 Make a backup before removing the mod from a world or server.
 
 ## 🧱 Building from source
