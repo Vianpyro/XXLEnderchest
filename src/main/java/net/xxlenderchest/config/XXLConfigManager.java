@@ -3,6 +3,7 @@ package net.xxlenderchest.config;
 import net.xxlenderchest.XXLEnderChest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
@@ -15,7 +16,8 @@ import java.nio.file.Path;
  * Manages reading and writing the {@link XXLConfig} JSON file.
  *
  * The config file is located at {@code <game_dir>/config/xxlenderchest.json}.
- * If the file does not exist it is created with sensible defaults (enabled, 6 rows).
+ * If the file does not exist it is created with sensible defaults plus inline comments
+ * that explain each option.
  */
 public class XXLConfigManager {
 
@@ -48,7 +50,10 @@ public class XXLConfigManager {
         }
 
         try (Reader reader = Files.newBufferedReader(configPath)) {
-            XXLConfig config = GSON.fromJson(reader, XXLConfig.class);
+            JsonReader jsonReader = new JsonReader(reader);
+            jsonReader.setLenient(true);
+
+            XXLConfig config = GSON.fromJson(jsonReader, XXLConfig.class);
 
             if (config == null) {
                 XXLEnderChest.LOGGER.warn("[XXL Enderchest] Config file was empty or invalid - using defaults.");
@@ -75,11 +80,21 @@ public class XXLConfigManager {
         try {
             Files.createDirectories(configPath.getParent());
             try (Writer writer = Files.newBufferedWriter(configPath)) {
-                GSON.toJson(config, writer);
+                writer.write(buildConfigFileContents(config));
             }
             XXLEnderChest.LOGGER.info("[XXL Enderchest] Config saved to {}", configPath);
         } catch (IOException e) {
             XXLEnderChest.LOGGER.error("[XXL Enderchest] Failed to save config file.", e);
         }
+    }
+
+    private String buildConfigFileContents(XXLConfig config) {
+        return """
+                {
+                  "enabled": %s, // When false, the mod stays inactive and the ender chest remains vanilla.
+                  "useLuckPerms": %s, // When true, XXL Enderchest checks LuckPerms row nodes if LuckPerms is installed.
+                  "rows": %d // Fallback row count from 3 to 6. Used when LuckPerms mode is off, or when LuckPerms is missing.
+                }
+                """.formatted(config.isEnabled(), config.isUseLuckPerms(), config.getRows());
     }
 }
