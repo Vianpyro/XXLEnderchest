@@ -93,8 +93,14 @@ public class XXLConfigManager {
                 {
                   "enabled": %s, // When false, the mod stays inactive and the ender chest remains vanilla.
                   "useLuckPerms": %s, // When true, XXL Enderchest checks LuckPerms row nodes if LuckPerms is installed.
-                  "rows": %d // Fallback row count from 3 to 6. Used when LuckPerms mode is off, or when LuckPerms is missing.
+                  "rows": %d, // Fallback row count from 3 to 6. Used when LuckPerms mode is off, or when LuckPerms is missing.
+                  "commandEnabled": %s // Enables the /enderchest command. With LuckPerms mode on, players also need xxlenderchest.command.enderchest.
                 }
-                """.formatted(config.isEnabled(), config.isUseLuckPerms(), config.getRows());
+                """.formatted(
+                config.isEnabled(),
+                config.isUseLuckPerms(),
+                config.getRows(),
+                config.isCommandEnabled()
+        );
     }
 }

@@ -26,7 +26,7 @@ Server-side Fabric mod for Minecraft Java Edition that expands the ender chest b
 
 ## ❗ How it works
 
-XXL Enderchest always keeps the internal ender chest container at 54 slots so data is never thrown away.
+XXL Enderchest always keeps the internal enderchest container at 54 slots so data is never thrown away.
 
 What players can actually open depends on the active mode:
 
@@ -34,6 +34,7 @@ What players can actually open depends on the active mode:
 - `enabled=true` and `useLuckPerms=false`: everyone gets the configured `rows` value.
 - `enabled=true` and `useLuckPerms=true` with LuckPerms installed: everyone keeps vanilla 3 rows by default, and permissions can upgrade that to 4, 5, or 6 rows.
 - `enabled=true` and `useLuckPerms=true` without LuckPerms installed: automatic fallback to configured `rows`.
+- `commandEnabled=true`: players can use `/enderchest`; in LuckPerms mode they also need the command permission node.
 
 ## ⚙️ Configuration
 
@@ -43,7 +44,8 @@ Config file: `config/xxlenderchest.json`
 {
   "enabled": true,
   "useLuckPerms": false,
-  "rows": 6
+  "rows": 6,
+  "commandEnabled": false
 }
 ```
 
@@ -52,6 +54,7 @@ Config file: `config/xxlenderchest.json`
 | `enabled` | boolean | When `false`, the mod stays inactive and the ender chest remains vanilla. |
 | `useLuckPerms` | boolean | When `true`, XXL Enderchest checks LuckPerms row nodes if LuckPerms is installed. |
 | `rows` | integer | Fallback row count from `3` to `6`. Used when LuckPerms mode is off, or when LuckPerms is missing. |
+| `commandEnabled` | boolean | Enables `/enderchest`. Default is `false`. In LuckPerms mode, players also need the command node. |
 
 After editing the config, run `/xxlenderchest reload`.
 
@@ -67,6 +70,7 @@ If LuckPerms mode is active, these nodes can increase the available rows:
 - `xxlenderchest.rows.4`
 - `xxlenderchest.rows.5`
 - `xxlenderchest.rows.6`
+- `xxlenderchest.command.enderchest` for `/enderchest` when `commandEnabled=true`
 
 Highest granted row wins.
 
@@ -86,6 +90,12 @@ Example: give one player full 6-row access.
 /lp user <player> permission set xxlenderchest.rows.6 true
 ```
 
+Example: enable the `/enderchest` command for one player.
+
+```text
+/lp user <player> permission set xxlenderchest.command.enderchest true
+```
+
 Official LuckPerms docs:
 
 - [LuckPerms Wiki](https://luckperms.net/wiki/Home)
@@ -95,6 +105,7 @@ Official LuckPerms docs:
 
 | Command | Permission | Description |
 |---------|------------|-------------|
+| `/enderchest` | Config toggle, plus `xxlenderchest.command.enderchest` when LuckPerms mode is active | Opens the player's own ender chest. Uses vanilla 3 rows when the XXL storage feature is disabled. |
 | `/xxlenderchest info` | OP | Shows mod status, whether LuckPerms is loaded, and whether row access currently uses config mode or LuckPerms mode. |
 | `/xxlenderchest reload` | OP | Reloads `config/xxlenderchest.json` without restarting the server. |
 
@@ -146,12 +157,8 @@ Requires Java 25 and internet access for Gradle dependencies.
 ```bash
 git clone https://github.com/SwordfishBE/XXLEnderchest.git
 cd XXLEnderchest
-
-# Linux / macOS
+chmod +x gradlew
 ./gradlew build
-
-# Windows
-gradlew.bat build
 ```
 
 ## 🤓 Technical details

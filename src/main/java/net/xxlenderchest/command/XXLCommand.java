@@ -8,6 +8,11 @@ import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.PlayerEnderChestContainer;
 
 /**
  * Registers and handles the /xxlenderchest command.
@@ -15,10 +20,18 @@ import net.minecraft.network.chat.Component;
  * Sub-commands:
  *   /xxlenderchest info   - Shows the current mod state (OP Gamemaster level only).
  *   /xxlenderchest reload - Reloads the config from disk (OP Gamemaster level only).
+ *   /enderchest           - Opens the player's own ender chest when enabled in config.
  */
 public class XXLCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(
+            Commands.literal("enderchest")
+                .requires(source -> source.getEntity() instanceof ServerPlayer player
+                        && PermissionHelper.canUseEnderChestCommand(player, XXLEnderChest.getConfig()))
+                .executes(XXLCommand::executeOpenEnderChest)
+        );
+
         dispatcher.register(
             Commands.literal("xxlenderchest")
                 .then(Commands.literal("info")
@@ -41,6 +54,7 @@ public class XXLCommand {
         String status = config.isEnabled() ? "ENABLED" : "DISABLED";
         String luckPermsStatus = luckPermsLoaded ? "§aLOADED" : "§cMISSING";
         String permissionMode = usingLuckPerms ? "§bLuckPerms" : "§eConfig";
+        String commandStatus = config.isCommandEnabled() ? "§aENABLED" : "§cDISABLED";
 
         ctx.getSource().sendSuccess(() -> Component.literal(
                 "§6[XXL Enderchest]§r Mod status: " + statusColor + status
@@ -53,13 +67,17 @@ public class XXLCommand {
                 "§6[XXL Enderchest]§r Fallback config rows: §e" + config.getRows()
                         + "§r (" + (config.getRows() * 9) + " slots)"
         ), false);
+        ctx.getSource().sendSuccess(() -> Component.literal(
+                "§6[XXL Enderchest]§r /enderchest command: " + commandStatus
+        ), false);
 
         if (usingLuckPerms) {
             ctx.getSource().sendSuccess(() -> Component.literal(
                     "§6[XXL Enderchest]§r Nodes: §7"
                             + PermissionHelper.PERMISSION_ROW_4 + "§r, §7"
                             + PermissionHelper.PERMISSION_ROW_5 + "§r, §7"
-                            + PermissionHelper.PERMISSION_ROW_6
+                            + PermissionHelper.PERMISSION_ROW_6 + "§r, §7"
+                            + PermissionHelper.PERMISSION_COMMAND_ENDERCHEST
             ), false);
         }
 
@@ -92,5 +110,34 @@ public class XXLCommand {
         );
 
         return 1;
+    }
+
+    private static int executeOpenEnderChest(CommandContext<CommandSourceStack> ctx) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+        ServerPlayer player = ctx.getSource().getPlayerOrException();
+        XXLConfig config = XXLEnderChest.getConfig();
+        int rows = PermissionHelper.resolveRows(player, config);
+        PlayerEnderChestContainer enderChest = player.getEnderChestInventory();
+
+        player.openMenu(new SimpleMenuProvider(
+                (syncId, playerInventory, ignoredPlayer) -> new ChestMenu(
+                        rowsToMenuType(rows),
+                        syncId,
+                        playerInventory,
+                        enderChest,
+                        rows
+                ),
+                Component.translatable("container.enderchest")
+        ));
+
+        return 1;
+    }
+
+    private static MenuType<?> rowsToMenuType(int rows) {
+        return switch (rows) {
+            case 3 -> MenuType.GENERIC_9x3;
+            case 4 -> MenuType.GENERIC_9x4;
+            case 5 -> MenuType.GENERIC_9x5;
+            default -> MenuType.GENERIC_9x6;
+        };
     }
 }

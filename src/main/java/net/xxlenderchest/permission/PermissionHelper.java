@@ -13,6 +13,7 @@ public final class PermissionHelper {
     public static final String PERMISSION_ROW_4 = "xxlenderchest.rows.4";
     public static final String PERMISSION_ROW_5 = "xxlenderchest.rows.5";
     public static final String PERMISSION_ROW_6 = "xxlenderchest.rows.6";
+    public static final String PERMISSION_COMMAND_ENDERCHEST = "xxlenderchest.command.enderchest";
 
     private static final int VANILLA_ROWS = 3;
     private static final boolean LUCKPERMS_AVAILABLE = FabricLoader.getInstance().isModLoaded("luckperms");
@@ -48,5 +49,17 @@ public final class PermissionHelper {
         }
 
         return VANILLA_ROWS;
+    }
+
+    public static boolean canUseEnderChestCommand(ServerPlayer player, XXLConfig config) {
+        if (!config.isCommandEnabled()) {
+            return false;
+        }
+
+        if (!isUsingLuckPerms(config)) {
+            return true;
+        }
+
+        return Permissions.check(player, PERMISSION_COMMAND_ENDERCHEST, false);
     }
 }

@@ -52,6 +52,14 @@ public final class XXLEnderChestClothConfigScreen {
                 .setSaveConsumer(editedConfig::setRows)
                 .build());
 
+        general.addEntry(entries.startBooleanToggle(
+                        Component.literal("Enable /enderchest command"),
+                        editedConfig.isCommandEnabled())
+                .setDefaultValue(false)
+                .setTooltip(Component.literal("When enabled, players can use /enderchest. In LuckPerms mode they also need the xxlenderchest.command.enderchest node."))
+                .setSaveConsumer(editedConfig::setCommandEnabled)
+                .build());
+
         builder.setSavingRunnable(() -> XXLEnderChest.applyEditedConfig(editedConfig));
         return builder.build();
     }

@@ -29,7 +29,8 @@ import org.slf4j.LoggerFactory;
  * {
  *   "enabled": true,       // false = vanilla ender chest behavior (3 rows)
  *   "useLuckPerms": false, // true = use permission nodes for 4/5/6 rows
- *   "rows": 6              // fallback row count when LuckPerms is not used
+ *   "rows": 6,             // fallback row count when LuckPerms is not used
+ *   "commandEnabled": false // enables /enderchest
  * }
  * </pre>
  *
@@ -75,6 +76,7 @@ public class XXLEnderChest implements ModInitializer {
         editableConfig.setEnabled(config.isEnabled());
         editableConfig.setUseLuckPerms(config.isUseLuckPerms());
         editableConfig.setRows(config.getRows());
+        editableConfig.setCommandEnabled(config.isCommandEnabled());
         return editableConfig;
     }
 
@@ -116,8 +118,8 @@ public class XXLEnderChest implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> ModrinthUpdateChecker.checkOnceAsync());
 
         LOGGER.info("[{}] Mod initialized. Version: {}", MOD_NAME, getModVersion());
-        LOGGER.debug("[{}] Runtime config after initialization: rows={}, enabled={}",
-                MOD_NAME, config.getRows(), config.isEnabled());
+        LOGGER.debug("[{}] Runtime config after initialization: rows={}, enabled={}, commandEnabled={}",
+                MOD_NAME, config.getRows(), config.isEnabled(), config.isCommandEnabled());
     }
 
     private static void logPermissionMode() {

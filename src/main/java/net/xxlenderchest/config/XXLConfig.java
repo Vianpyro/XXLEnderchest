@@ -24,8 +24,12 @@ public class XXLConfig {
      */
     private int rows = 6;
 
+    /** Whether players can use the /enderchest command. */
+    private boolean commandEnabled = false;
+
     public boolean isEnabled() { return enabled; }
     public boolean isUseLuckPerms() { return useLuckPerms; }
+    public boolean isCommandEnabled() { return commandEnabled; }
 
     /** Returns the configured row count, always clamped to [3, 6]. */
     public int getRows() { return rows; }
@@ -33,6 +37,7 @@ public class XXLConfig {
     public void setEnabled(boolean enabled) { this.enabled = enabled; }
     public void setUseLuckPerms(boolean useLuckPerms) { this.useLuckPerms = useLuckPerms; }
     public void setRows(int rows) { this.rows = rows; }
+    public void setCommandEnabled(boolean commandEnabled) { this.commandEnabled = commandEnabled; }
 
     /** Clamps rows to the allowed range [3, 6]. */
     public void validate() {
@@ -42,6 +47,10 @@ public class XXLConfig {
 
     @Override
     public String toString() {
-        return "XXLConfig{enabled=" + enabled + ", useLuckPerms=" + useLuckPerms + ", rows=" + rows + "}";
+        return "XXLConfig{enabled=" + enabled
+                + ", useLuckPerms=" + useLuckPerms
+                + ", rows=" + rows
+                + ", commandEnabled=" + commandEnabled
+                + "}";
     }
 }
