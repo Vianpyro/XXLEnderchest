@@ -20,6 +20,7 @@ Server-side Fabric mod for Minecraft Java Edition that expands the ender chest b
 - Fixed config mode for simple servers or single-player worlds.
 - Optional LuckPerms mode for per-group row upgrades.
 - Optional Mod Menu + Cloth Config integration for an in-game config screen on the client.
+- Optional /enderchest command, it opens the player's own enderchest.
 - Automatic fallback to config mode if LuckPerms is enabled in config but the mod is not installed.
 - Hidden rows keep their items stored safely; lowering access does not delete inventory contents.
 - Works on dedicated servers and in single-player.
