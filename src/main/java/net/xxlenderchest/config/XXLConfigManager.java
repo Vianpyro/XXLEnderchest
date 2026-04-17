@@ -3,6 +3,7 @@ package net.xxlenderchest.config;
 import net.xxlenderchest.XXLEnderChest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import com.google.gson.stream.JsonReader;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -65,9 +66,16 @@ public class XXLConfigManager {
             XXLEnderChest.LOGGER.debug("{} Config loaded: {}", XXLEnderChest.getLogPrefix(), config);
             return config;
 
-        } catch (IOException e) {
+        } catch (IOException | JsonParseException e) {
             XXLEnderChest.LOGGER.error("{} Failed to read config file - using defaults.", XXLEnderChest.getLogPrefix(), e);
-            return new XXLConfig();
+            XXLConfig defaults = new XXLConfig();
+            save(defaults);
+            return defaults;
+        } catch (RuntimeException e) {
+            XXLEnderChest.LOGGER.error("{} Unexpected config error - using defaults.", XXLEnderChest.getLogPrefix(), e);
+            XXLConfig defaults = new XXLConfig();
+            save(defaults);
+            return defaults;
         }
     }
 
@@ -75,16 +83,19 @@ public class XXLConfigManager {
      * Saves the given config to disk.
      *
      * @param config the config to save
+     * @return {@code true} when the config was written successfully
      */
-    public void save(XXLConfig config) {
+    public boolean save(XXLConfig config) {
         try {
             Files.createDirectories(configPath.getParent());
             try (Writer writer = Files.newBufferedWriter(configPath)) {
                 writer.write(buildConfigFileContents(config));
             }
             XXLEnderChest.LOGGER.debug("{} Config saved to {}", XXLEnderChest.getLogPrefix(), configPath);
+            return true;
         } catch (IOException e) {
             XXLEnderChest.LOGGER.error("{} Failed to save config file.", XXLEnderChest.getLogPrefix(), e);
+            return false;
         }
     }
 

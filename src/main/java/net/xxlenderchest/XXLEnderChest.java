@@ -94,7 +94,11 @@ public class XXLEnderChest implements ModInitializer {
      */
     public static void applyEditedConfig(XXLConfig editedConfig) {
         editedConfig.validate();
-        configManager.save(editedConfig);
+        if (!configManager.save(editedConfig)) {
+            LOGGER.error("[{}] Edited config was not applied because saving to disk failed.", MOD_NAME);
+            return;
+        }
+
         config = editedConfig;
         logPermissionMode();
     }
